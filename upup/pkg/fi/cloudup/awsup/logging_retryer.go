@@ -42,6 +42,13 @@ func newLoggingRetryer(maxRetries int) *LoggingRetryer {
 func (l LoggingRetryer) RetryRules(r *request.Request) time.Duration {
 	duration := l.DefaultRetryer.RetryRules(r)
 
+	// If the credentials have expired, lets explicitly expire them and refresh.
+	if r.Config.Credentials.IsExpired() {
+		glog.Infof("Credentials have expired; attempting to refresh.")
+		r.Config.Credentials.Expire()
+		r.Config.Credentials.Get()
+	}
+
 	service := r.ClientInfo.ServiceName
 	name := "?"
 	if r.Operation != nil {
