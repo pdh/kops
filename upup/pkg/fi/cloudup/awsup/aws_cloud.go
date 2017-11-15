@@ -184,7 +184,6 @@ func NewAWSCloud(region string, tags map[string]string) (AWSCloud, error) {
 		// e.g. https://github.com/kubernetes/kops/issues/605
 		config = config.WithCredentialsChainVerboseErrors(true)
 		config = request.WithRetryer(config, newLoggingRetryer(ClientMaxRetries))
-
 		requestLogger := newRequestLogger(2)
 
 		sess, err := session.NewSession(config)
@@ -195,42 +194,42 @@ func NewAWSCloud(region string, tags map[string]string) (AWSCloud, error) {
 		c.cf.Handlers.Send.PushFront(requestLogger)
 		c.addHandlers(region, &c.cf.Handlers)
 
-		sess, err = session.NewSession(config)
-		if err != nil {
-			return c, err
-		}
+		//sess, err = session.NewSession(config)
+		//if err != nil {
+		//	return c, err
+		//}
 		c.ec2 = ec2.New(sess, config)
 		c.ec2.Handlers.Send.PushFront(requestLogger)
 		c.addHandlers(region, &c.ec2.Handlers)
 
-		sess, err = session.NewSession(config)
-		if err != nil {
-			return c, err
-		}
+		//sess, err = session.NewSession(config)
+		//if err != nil {
+		//	return c, err
+		//}
 		c.iam = iam.New(sess, config)
 		c.iam.Handlers.Send.PushFront(requestLogger)
 		c.addHandlers(region, &c.iam.Handlers)
 
-		sess, err = session.NewSession(config)
-		if err != nil {
-			return c, err
-		}
+		//sess, err = session.NewSession(config)
+		//if err != nil {
+		//	return c, err
+		//}
 		c.elb = elb.New(sess, config)
 		c.elb.Handlers.Send.PushFront(requestLogger)
 		c.addHandlers(region, &c.elb.Handlers)
 
-		sess, err = session.NewSession(config)
-		if err != nil {
-			return c, err
-		}
+		//sess, err = session.NewSession(config)
+		//if err != nil {
+		//	return c, err
+		//}
 		c.autoscaling = autoscaling.New(sess, config)
 		c.autoscaling.Handlers.Send.PushFront(requestLogger)
 		c.addHandlers(region, &c.autoscaling.Handlers)
 
-		sess, err = session.NewSession(config)
-		if err != nil {
-			return c, err
-		}
+		//sess, err = session.NewSession(config)
+		//if err != nil {
+		//	return c, err
+		//}
 		c.route53 = route53.New(sess, config)
 		c.route53.Handlers.Send.PushFront(requestLogger)
 		c.addHandlers(region, &c.route53.Handlers)
